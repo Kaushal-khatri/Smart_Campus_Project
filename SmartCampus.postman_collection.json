@@ -1,0 +1,327 @@
+{
+  "info": {
+    "name": "Smart Campus API Coursework Demo",
+    "_postman_id": "b1fb6fd1-8d62-4ef9-8b1c-fb4b2f623bc1",
+    "description": "Postman collection for demonstrating the Smart Campus JAX-RS coursework API.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8080/smartcampus/api/v1"
+    },
+    {
+      "key": "roomId",
+      "value": "LIB-301"
+    },
+    {
+      "key": "sensorId",
+      "value": "TEMP-001"
+    },
+    {
+      "key": "maintenanceSensorId",
+      "value": "MAINT-001"
+    }
+  ],
+  "item": [
+    {
+      "name": "1. Discovery Endpoint",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}",
+          "host": [
+            "{{baseUrl}}"
+          ]
+        }
+      }
+    },
+    {
+      "name": "2. Create Room",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"id\": \"{{roomId}}\",\n  \"name\": \"Library Quiet Study\",\n  \"capacity\": 20\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/rooms",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "rooms"
+          ]
+        }
+      }
+    },
+    {
+      "name": "3. Get All Rooms",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/rooms",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "rooms"
+          ]
+        }
+      }
+    },
+    {
+      "name": "4. Get Room By ID",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/rooms/{{roomId}}",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "rooms",
+            "{{roomId}}"
+          ]
+        }
+      }
+    },
+    {
+      "name": "5. Create Valid Sensor",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"id\": \"{{sensorId}}\",\n  \"type\": \"Temperature\",\n  \"status\": \"ACTIVE\",\n  \"currentValue\": 22.5,\n  \"roomId\": \"{{roomId}}\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/sensors",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "sensors"
+          ]
+        }
+      }
+    },
+    {
+      "name": "6. Create Sensor With Missing Room",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"id\": \"CO2-404\",\n  \"type\": \"CO2\",\n  \"status\": \"ACTIVE\",\n  \"currentValue\": 450.0,\n  \"roomId\": \"MISSING-ROOM\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/sensors",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "sensors"
+          ]
+        }
+      }
+    },
+    {
+      "name": "7. Duplicate Room ID",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"id\": \"{{roomId}}\",\n  \"name\": \"Duplicate Library Room\",\n  \"capacity\": 12\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/rooms",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "rooms"
+          ]
+        }
+      }
+    },
+    {
+      "name": "8. Filter Sensors By Type",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/sensors?type=Temperature",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "sensors"
+          ],
+          "query": [
+            {
+              "key": "type",
+              "value": "Temperature"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "9. Add Reading To Active Sensor",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"value\": 23.7\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/sensors/{{sensorId}}/readings",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "sensors",
+            "{{sensorId}}",
+            "readings"
+          ]
+        }
+      }
+    },
+    {
+      "name": "10. Get Reading History",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/sensors/{{sensorId}}/readings",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "sensors",
+            "{{sensorId}}",
+            "readings"
+          ]
+        }
+      }
+    },
+    {
+      "name": "11. Get Sensor By ID",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/sensors/{{sensorId}}",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "sensors",
+            "{{sensorId}}"
+          ]
+        }
+      }
+    },
+    {
+      "name": "12. Create Maintenance Sensor",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"id\": \"{{maintenanceSensorId}}\",\n  \"type\": \"Temperature\",\n  \"status\": \"MAINTENANCE\",\n  \"currentValue\": 20.0,\n  \"roomId\": \"{{roomId}}\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/sensors",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "sensors"
+          ]
+        }
+      }
+    },
+    {
+      "name": "13. Post Reading To Maintenance Sensor",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"value\": 19.5\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/sensors/{{maintenanceSensorId}}/readings",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "sensors",
+            "{{maintenanceSensorId}}",
+            "readings"
+          ]
+        }
+      }
+    },
+    {
+      "name": "14. Delete Occupied Room",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/rooms/{{roomId}}",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "rooms",
+            "{{roomId}}"
+          ]
+        }
+      }
+    }
+  ]
+}
